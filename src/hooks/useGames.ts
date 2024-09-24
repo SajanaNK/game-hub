@@ -7,6 +7,7 @@ import {
 } from "../types/types";
 import ApiClient from "../services/api-client";
 import ms from "ms";
+import gameQueryStore from "../store";
 
 const APIClient = new ApiClient<FetchResponse<Game>>("/games");
 
@@ -41,7 +42,10 @@ const APIClient = new ApiClient<FetchResponse<Game>>("/games");
 // };
 
 
-const useGames = (gameQuery: GameQuery) => {
+const useGames = () => {
+  
+  const gameQuery =  gameQueryStore(s => s.gameQuery);
+
   return useInfiniteQuery<FetchResponse<Game>,Error>({
     queryKey: ["games", gameQuery],
     queryFn: ({pageParam = 1}) =>
